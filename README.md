@@ -5,7 +5,9 @@ A Next.js dashboard for discovering GitHub Trending repositories and building a 
 ## Features
 
 - Live GitHub Trending: daily, weekly, and monthly
-- Search, language filters, rising-star sorting, browser-local watchlist
+- Search, language filters, rising-star and momentum ranking, browser-local watchlist
+- Heuristic momentum score based on period star gain (60%), relative growth rate (25%), and fork-to-star ratio (15%); scores are relative signals, not predictions
+- Compare up to five repositories side by side
 - PostgreSQL storage for repository metadata and daily star/fork snapshots
 - Protected collection endpoint and repository history API
 - Vercel Cron scheduled collection (daily)
