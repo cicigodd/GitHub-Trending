@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { Activity, ArrowLeft, ExternalLink, GitFork, Globe, Scale, Star, Eye, CircleDot, CalendarDays, Clock3, AlertCircle } from "lucide-react";
 
 type Repository = {
-  fullName: string; description: string | null; htmlUrl: string; homepage: string | null;
+  id: number; name: string; fullName: string; description: string | null; htmlUrl: string; homepage: string | null;
   language: string | null; stars: number; forks: number; watchers: number; openIssues: number;
   license: string | null; topics: string[]; defaultBranch: string; createdAt: string;
   updatedAt: string; pushedAt: string; archived: boolean; fork: boolean;
