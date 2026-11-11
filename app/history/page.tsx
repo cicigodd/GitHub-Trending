@@ -41,13 +41,13 @@ export default function HistoryPage() {
   }
 
   const chart = useMemo(() => {
-    if (points.length < 2) return null;
+    if (points.length === 0) return null;
     const values = points.map((point) => point.stars);
     const min = Math.min(...values);
     const max = Math.max(...values);
     const range = Math.max(1, max - min);
     const coords = values.map((value, index) => ({
-      x: 24 + (index / (values.length - 1)) * 752,
+      x: values.length === 1 ? 400 : 24 + (index / (values.length - 1)) * 752,
       y: 176 - ((value - min) / range) * 140,
     }));
     return {
@@ -56,6 +56,8 @@ export default function HistoryPage() {
       min,
       max,
       change: values[values.length - 1] - values[0],
+      lastX: coords[coords.length - 1].x,
+      lastY: coords[coords.length - 1].y,
     };
   }, [points]);
 
@@ -90,6 +92,7 @@ export default function HistoryPage() {
                 <line x1="24" y1="176" x2="776" y2="176" stroke="rgba(148,163,184,.2)" strokeDasharray="4 5"/>
                 <polygon points={chart.area} fill="url(#historyFill)"/>
                 <polyline points={chart.line} fill="none" stroke="#5ee0b5" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx={chart.lastX} cy={chart.lastY} r="5" fill="#5ee0b5" stroke="#0b1220" strokeWidth="2"/>
               </svg>
               <div className="mt-2 flex justify-between text-[10px] muted"><span>{new Date(points[0].capturedAt).toLocaleDateString()}</span><span>{new Date(points[points.length - 1].capturedAt).toLocaleDateString()}</span></div>
             </div>
