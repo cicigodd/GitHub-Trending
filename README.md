@@ -1,21 +1,36 @@
-# GitHub Trending Monitor
+# Pulse — GitHub Trending Monitor
 
 A web application for discovering trending GitHub repositories and tracking star growth over time.
 
-## Product direction
+## Current status
 
-- Trending repositories by daily, weekly, and monthly windows
-- Language filters and new repository discovery
-- Historical star snapshots and growth rankings
-- Repository watchlist and notification center
-- Scheduled data collection with GitHub API rate-limit handling
+The first web dashboard scaffold is available on `feat/web-dashboard`. The repository list is explicitly marked as sample data; live collection and persistence are not connected yet.
 
-## Planned stack
+## Stack
 
-- Next.js App Router, TypeScript, Tailwind CSS
-- PostgreSQL for repository metadata and historical snapshots
-- A scheduled worker for Trending ingestion and GitHub REST API polling
+- Next.js 14 App Router, React 18, TypeScript
+- Tailwind CSS and Lucide icons
+- Planned: PostgreSQL, scheduled ingestion worker, GitHub REST API
 
-## Status
+## Run locally
 
-Project initialized. Implementation is being developed on a dedicated feature branch.
+```bash
+npm install
+npm run dev
+```
+
+Open http://localhost:3000.
+
+## Health endpoint
+
+`GET /api/health` returns service status.
+
+## Roadmap
+
+1. Responsive dashboard and repository exploration UI
+2. GitHub Trending ingestion with parser fixtures and failure handling
+3. GitHub API synchronization and rate-limit-aware star snapshots
+4. PostgreSQL persistence and scheduled worker
+5. Watchlists, alerts, authentication, and deployment configuration
+
+Never commit GitHub tokens or database credentials. Keep secrets in server-side environment variables.
