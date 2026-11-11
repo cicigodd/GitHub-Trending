@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Activity, ArrowLeft, ExternalLink, GitFork, Star, Eye, CircleDot, Scale, AlertCircle, X } from "lucide-react";
+import { Activity, ArrowLeft, ExternalLink, GitFork, Star, Eye, CircleDot, Scale, AlertCircle } from "lucide-react";
 
 type Repo = { fullName:string; description:string|null; htmlUrl:string; language:string|null; stars:number; forks:number; watchers:number; openIssues:number; license:string|null; topics:string[]; createdAt:string; pushedAt:string; owner:{login:string;avatarUrl:string} };
 const number = (n:number) => n.toLocaleString();
