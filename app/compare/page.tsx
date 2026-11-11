@@ -2,18 +2,18 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { Activity, ArrowLeft, ExternalLink, GitFork, Star, Eye, CircleDot, Scale, AlertCircle } from "lucide-react";
 
 type Repo = { fullName:string; description:string|null; htmlUrl:string; language:string|null; stars:number; forks:number; watchers:number; openIssues:number; license:string|null; topics:string[]; createdAt:string; pushedAt:string; owner:{login:string;avatarUrl:string} };
 const number = (n:number) => n.toLocaleString();
 export default function ComparePage() {
-  const params=useSearchParams();
-  const names=useMemo(()=>Array.from(new Set((params.get("repos")||"").split(",").filter(Boolean))).slice(0,5),[params]);
+  const [names,setNames]=useState<string[]>([]);
+  useEffect(()=>{ const params=new URLSearchParams(window.location.search); setNames(Array.from(new Set((params.get("repos")||"").split(",").filter(Boolean))).slice(0,5)); },[]);
   const [repos,setRepos]=useState<Repo[]>([]);
   const [loading,setLoading]=useState(true);
   const [errors,setErrors]=useState<string[]>([]);
   useEffect(()=>{
+    if(names.length===0){setLoading(false);return;}
     const controller=new AbortController();
     Promise.all(names.map(async name=>{
       const response=await fetch(`/api/repository?repo=${encodeURIComponent(name)}`,{signal:controller.signal});
