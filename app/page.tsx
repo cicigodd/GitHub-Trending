@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Activity, ArrowUpRight, Bookmark, CircleDot, ExternalLink, Flame, Github, Search, Star, TrendingUp, Zap, GitCompare, Check } from "lucide-react";
+import { Activity, ArrowUpRight, Bookmark, CircleDot, ExternalLink, Flame, Github, Search, Star, TrendingUp, Zap, GitCompare } from "lucide-react";
 
 type Repo = {
   name: string;
