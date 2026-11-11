@@ -4,7 +4,7 @@ import { FormEvent, useMemo, useState } from "react";
 import Link from "next/link";
 import { Activity, ArrowLeft, BarChart3, CalendarDays, Search, Star } from "lucide-react";
 
-type Point = { capturedAt: string; Star: number; forks: number };
+type Point = { capturedAt: string; stars: number; forks: number };
 type HistoryResponse = { repository: string; days: number; points: Point[]; error?: string };
 
 export default function HistoryPage() {
