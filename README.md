@@ -1,21 +1,21 @@
 # Pulse — GitHub Trending Monitor
 
-A Next.js dashboard for exploring repositories currently trending on GitHub.
+A Next.js dashboard for discovering GitHub Trending repositories and building a daily history of their stars and forks.
 
-## Current features
+## Features
 
-- Live repository data from GitHub Trending (daily, weekly, monthly)
-- Search and programming-language filters
-- Rising-stars sorting using the period gain displayed by GitHub
-- Browser-local watchlist
-- Server-side HTML parsing; no GitHub token required for the public Trending page
-- 15-minute response caching and a health endpoint
+- Live GitHub Trending: daily, weekly, and monthly
+- Search, language filters, rising-star sorting, browser-local watchlist
+- PostgreSQL storage for repository metadata and daily star/fork snapshots
+- Protected collection endpoint and repository history API
+- Vercel Cron scheduled collection (daily)
 
 ## Stack
 
 - Next.js 14 App Router, React 18, TypeScript
 - Tailwind CSS, Lucide icons, Cheerio
-- Deployment target: Vercel
+- Neon serverless PostgreSQL
+- Vercel deployment and Cron
 
 ## Run locally
 
@@ -24,22 +24,24 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000.
-
 ## API
 
 - `GET /api/health` — service health
-- `GET /api/trending?since=daily|weekly|monthly` — live GitHub Trending repositories
+- `GET /api/trending?since=daily|weekly|monthly` — live Trending data
+- `GET /api/history?repo=owner/name&days=30` — stored star/fork history
+- `GET /api/cron/collect` — protected daily collector (requires `Authorization: Bearer <CRON_SECRET>`)
 
-## Notes
+## Database setup
 
-The Trending endpoint parses GitHub's public HTML page. GitHub may change its markup or apply request limits; the API returns a clear error if the expected repository rows cannot be found. This first milestone does not yet store historical snapshots, provide cross-device accounts, or send alerts.
+1. Create a PostgreSQL database with Neon.
+2. Run `db/schema.sql` once in the Neon SQL Editor.
+3. Set `DATABASE_URL` and `CRON_SECRET` in Vercel project environment variables.
+4. Deploy the project. Vercel Cron calls the collector daily at 08:00 UTC.
 
-## Roadmap
+The first historical chart baseline starts after the first successful collection. Daily snapshots cannot reconstruct history from before collection began.
 
-1. Live Trending dashboard
-2. Historical star snapshots and momentum charts
-3. Persistent watchlists and user accounts (if needed)
-4. Notifications and production monitoring
+## Scheduling limits
 
-Never commit GitHub tokens or database credentials. Keep secrets in server-side environment variables.
+The included Vercel Cron schedule is daily. More frequent collection requires a hosting plan and scheduler that support the desired cadence, or an external scheduler calling the protected endpoint.
+
+Never commit database URLs or cron secrets.
