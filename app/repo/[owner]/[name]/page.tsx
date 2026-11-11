@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Activity, ArrowLeft, ExternalLink, Git派生仓库, Globe, Scale, Star, Eye, CircleDot, CalendarDays, Clock3, AlertCircle } from "lucide-react";
+import { Activity, ArrowLeft, ExternalLink, GitFork, Globe, Scale, Star, Eye, CircleDot, CalendarDays, Clock3, AlertCircle } from "lucide-react";
 
 type 仓库 = {
   id: number; name: string; fullName: string; description: string | null; htmlUrl: string; homepage: string | null;
@@ -18,7 +18,7 @@ function date(value: string) {
   return new Date(value).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
 }
 
-export default function 仓库Page() {
+export default function RepositoryPage() {
   const params = useParams<{ owner: string; name: string }>();
   const fullName = `${params.owner}/${params.name}`;
   const [repo, setRepo] = useState<仓库 | null>(null);
