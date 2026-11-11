@@ -4,11 +4,11 @@ import { FormEvent, useMemo, useState } from "react";
 import Link from "next/link";
 import { Activity, ArrowLeft, BarChart3, CalendarDays, Search, Star } from "lucide-react";
 
-type Point = { capturedAt: string; stars: number; forks: number };
+type Point = { capturedAt: string; Star: number; forks: number };
 type HistoryResponse = { repository: string; days: number; points: Point[]; error?: string };
 
 export default function HistoryPage() {
-  const [repository, setRepository] = useState("vercel/next.js");
+  const [repository, set仓库] = useState("vercel/next.js");
   const [days, setDays] = useState("30");
   const [points, setPoints] = useState<Point[]>([]);
   const [loadedRepo, setLoadedRepo] = useState("");
@@ -20,7 +20,7 @@ export default function HistoryPage() {
     event.preventDefault();
     const repo = repository.trim();
     if (!/^[^/\s]+\/[^/\s]+$/.test(repo)) {
-      setError("Enter a repository in owner/name format.");
+      setError("请输入 owner/name 格式的仓库名称。");
       return;
     }
     setLoading(true);
@@ -29,11 +29,11 @@ export default function HistoryPage() {
     try {
       const response = await fetch(`/api/history?repo=${encodeURIComponent(repo)}&days=${days}`);
       const payload = (await response.json()) as HistoryResponse;
-      if (!response.ok) throw new Error(payload.error || "Unable to load history.");
+      if (!response.ok) throw new Error(payload.error || "暂时无法加载历史记录。");
       setPoints(payload.points);
       setLoadedRepo(repo);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unable to load history.");
+      setError(err instanceof Error ? err.message : "暂时无法加载历史记录。");
       setPoints([]);
     } finally {
       setLoading(false);
@@ -65,28 +65,28 @@ export default function HistoryPage() {
     <main className="shell grid-bg min-h-screen">
       <div className="mx-auto max-w-[1100px] px-5 py-6 md:px-9 lg:px-12">
         <header className="flex items-center justify-between border-b border-white/[0.08] pb-6">
-          <Link href="/" className="flex items-center gap-3 text-slate-200 hover:text-emerald-300"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-300 text-slate-950"><Activity size={22}/></div><div><div className="text-lg font-bold tracking-tight text-white">PULSE<span className="accent">.</span></div><div className="text-[10px] uppercase tracking-[.22em] muted">GitHub intelligence</div></div></Link>
-          <Link href="/" className="flex items-center gap-2 text-xs text-slate-400 hover:text-white"><ArrowLeft size={14}/> Back to trending</Link>
+          <Link href="/" className="flex items-center gap-3 text-slate-200 hover:text-emerald-300"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-300 text-slate-950"><Activity size={22}/></div><div><div className="text-lg font-bold tracking-tight text-white">PULSE<span className="accent">.</span></div><div className="text-[10px] uppercase tracking-[.22em] muted">GitHub 开源情报</div></div></Link>
+          <Link href="/" className="flex items-center gap-2 text-xs text-slate-400 hover:text-white"><ArrowLeft size={14}/> 返回趋势榜</Link>
         </header>
 
         <section className="pt-12 pb-8">
-          <div className="mb-3 flex items-center gap-2 text-xs font-medium uppercase tracking-[.2em] accent"><BarChart3 size={14}/> Historical intelligence</div>
-          <h1 className="text-4xl font-semibold tracking-[-.045em] text-white md:text-5xl">Star history.<br/><span className="text-slate-500">Measured over time.</span></h1>
-          <p className="mt-4 max-w-xl text-sm leading-6 muted">View the daily star and fork snapshots collected by Pulse. History begins when the collector first runs; it cannot recreate earlier counts.</p>
+          <div className="mb-3 flex items-center gap-2 text-xs font-medium uppercase tracking-[.2em] accent"><BarChart3 size={14}/> 历史数据分析</div>
+          <h1 className="text-4xl font-semibold tracking-[-.045em] text-white md:text-5xl">Star 增长历史。<br/><span className="text-slate-500">追踪项目长期变化。</span></h1>
+          <p className="mt-4 max-w-xl text-sm leading-6 muted">查看 PULSE 每日采集的 Star 和 Fork 快照。历史记录从采集器首次运行后开始，无法补回此前的数据。</p>
         </section>
 
         <section className="panel rounded-2xl p-5 md:p-6">
           <form onSubmit={loadHistory} className="flex flex-col gap-3 md:flex-row">
-            <label className="relative flex-1"><span className="sr-only">Repository</span><Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 muted"/><input value={repository} onChange={(event) => setRepository(event.target.value)} placeholder="owner/repository" className="w-full rounded-lg border border-white/10 bg-black/20 py-3 pl-9 pr-3 text-sm text-white outline-none placeholder:text-slate-600 focus:border-emerald-300/50"/></label>
-            <label className="flex items-center gap-2 rounded-lg border border-white/10 px-3 text-xs text-slate-400"><CalendarDays size={14}/><select value={days} onChange={(event) => setDays(event.target.value)} className="bg-transparent py-3 text-slate-200 outline-none"><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 365 days</option></select></label>
-            <button type="submit" disabled={loading} className="rounded-lg bg-emerald-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-200 disabled:opacity-50">{loading ? "Loading…" : "View history"}</button>
+            <label className="relative flex-1"><span className="sr-only">仓库</span><Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 muted"/><input value={repository} onChange={(event) => set仓库(event.target.value)} placeholder="所有者/仓库名" className="w-full rounded-lg border border-white/10 bg-black/20 py-3 pl-9 pr-3 text-sm text-white outline-none placeholder:text-slate-600 focus:border-emerald-300/50"/></label>
+            <label className="flex items-center gap-2 rounded-lg border border-white/10 px-3 text-xs text-slate-400"><CalendarDays size={14}/><select value={days} onChange={(event) => setDays(event.target.value)} className="bg-transparent py-3 text-slate-200 outline-none"><option value="7">最近 7 天</option><option value="30">最近 30 天</option><option value="90">最近 90 天</option><option value="365">最近 365 天</option></select></label>
+            <button type="submit" disabled={loading} className="rounded-lg bg-emerald-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-emerald-200 disabled:opacity-50">{loading ? "加载中…" : "查看历史"}</button>
           </form>
           {error && <p className="mt-4 text-sm text-rose-300">{error}</p>}
-          {!error && searched && !loading && points.length === 0 && <div className="py-14 text-center"><Star size={24} className="mx-auto mb-3 text-slate-500"/><p className="text-sm text-slate-300">No snapshots found for {loadedRepo || repository}.</p><p className="mt-2 text-xs muted">Run the collector and wait for daily snapshots to accumulate.</p></div>}
+          {!error && searched && !loading && points.length === 0 && <div className="py-14 text-center"><Star size={24} className="mx-auto mb-3 text-slate-500"/><p className="text-sm text-slate-300">未找到该仓库的历史快照：{loadedRepo || repository}.</p><p className="mt-2 text-xs muted">请先运行数据采集任务，并等待每日快照逐步累积。</p></div>}
           {chart && <div className="mt-7">
-            <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><div className="text-sm font-semibold text-white">{loadedRepo}</div><div className="mt-1 text-xs muted">{points.length} daily snapshots</div></div><div className="text-right"><div className="text-2xl font-semibold text-white">{points[points.length - 1].stars.toLocaleString()}</div><div className={`mt-1 text-xs ${chart.change >= 0 ? "text-emerald-300" : "text-rose-300"}`}>{chart.change >= 0 ? "+" : ""}{chart.change.toLocaleString()} stars since first snapshot</div></div></div>
+            <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-end"><div><div className="text-sm font-semibold text-white">{loadedRepo}</div><div className="mt-1 text-xs muted">{points.length} 条每日快照</div></div><div className="text-right"><div className="text-2xl font-semibold text-white">{points[points.length - 1].stars.toLocaleString()}</div><div className={`mt-1 text-xs ${chart.change >= 0 ? "text-emerald-300" : "text-rose-300"}`}>{chart.change >= 0 ? "+" : ""}{chart.change.toLocaleString()} Star（相比首次记录）</div></div></div>
             <div className="panel rounded-xl p-3 md:p-5">
-              <div className="mb-3 flex justify-between text-[10px] muted"><span>{chart.min.toLocaleString()} stars</span><span>{chart.max.toLocaleString()} stars</span></div>
+              <div className="mb-3 flex justify-between text-[10px] muted"><span>{chart.min.toLocaleString()} Star</span><span>{chart.max.toLocaleString()} Star</span></div>
               <svg viewBox="0 0 800 200" role="img" aria-label={`Star count history for ${loadedRepo}`} className="w-full overflow-visible">
                 <defs><linearGradient id="historyFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stopColor="#5ee0b5" stopOpacity=".25"/><stop offset="100%" stopColor="#5ee0b5" stopOpacity="0"/></linearGradient></defs>
                 <line x1="24" y1="176" x2="776" y2="176" stroke="rgba(148,163,184,.2)" strokeDasharray="4 5"/>
@@ -96,11 +96,11 @@ export default function HistoryPage() {
               </svg>
               <div className="mt-2 flex justify-between text-[10px] muted"><span>{new Date(points[0].capturedAt).toLocaleDateString()}</span><span>{new Date(points[points.length - 1].capturedAt).toLocaleDateString()}</span></div>
             </div>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2"><div className="panel rounded-xl p-4"><div className="text-xs muted">Latest stars</div><div className="mt-2 text-xl font-semibold text-white">{points[points.length - 1].stars.toLocaleString()}</div></div><div className="panel rounded-xl p-4"><div className="text-xs muted">Latest forks</div><div className="mt-2 text-xl font-semibold text-white">{points[points.length - 1].forks.toLocaleString()}</div></div></div>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2"><div className="panel rounded-xl p-4"><div className="text-xs muted">Latest Star</div><div className="mt-2 text-xl font-semibold text-white">{points[points.length - 1].stars.toLocaleString()}</div></div><div className="panel rounded-xl p-4"><div className="text-xs muted">最新 Fork 数</div><div className="mt-2 text-xl font-semibold text-white">{points[points.length - 1].forks.toLocaleString()}</div></div></div>
           </div>}
-          {!searched && <div className="py-14 text-center text-sm muted">Enter a GitHub repository to inspect its recorded history.</div>}
+          {!searched && <div className="py-14 text-center text-sm muted">输入 GitHub 仓库名称，查看已记录的历史数据。</div>}
         </section>
-        <footer className="py-7 text-[10px] muted">PULSE · Historical data is based on snapshots collected after database setup.</footer>
+        <footer className="py-7 text-[10px] muted">PULSE · 历史数据来自数据库配置完成后的持续采集。</footer>
       </div>
     </main>
   );
