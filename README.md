@@ -1,16 +1,21 @@
 # Pulse — GitHub Trending Monitor
 
-A web application for discovering trending GitHub repositories and tracking star growth over time.
+A Next.js dashboard for exploring repositories currently trending on GitHub.
 
-## Current status
+## Current features
 
-The first web dashboard scaffold is available on `feat/web-dashboard`. The repository list is explicitly marked as sample data; live collection and persistence are not connected yet.
+- Live repository data from GitHub Trending (daily, weekly, monthly)
+- Search and programming-language filters
+- Rising-stars sorting using the period gain displayed by GitHub
+- Browser-local watchlist
+- Server-side HTML parsing; no GitHub token required for the public Trending page
+- 15-minute response caching and a health endpoint
 
 ## Stack
 
 - Next.js 14 App Router, React 18, TypeScript
-- Tailwind CSS and Lucide icons
-- Planned: PostgreSQL, scheduled ingestion worker, GitHub REST API
+- Tailwind CSS, Lucide icons, Cheerio
+- Deployment target: Vercel
 
 ## Run locally
 
@@ -21,16 +26,20 @@ npm run dev
 
 Open http://localhost:3000.
 
-## Health endpoint
+## API
 
-`GET /api/health` returns service status.
+- `GET /api/health` — service health
+- `GET /api/trending?since=daily|weekly|monthly` — live GitHub Trending repositories
+
+## Notes
+
+The Trending endpoint parses GitHub's public HTML page. GitHub may change its markup or apply request limits; the API returns a clear error if the expected repository rows cannot be found. This first milestone does not yet store historical snapshots, provide cross-device accounts, or send alerts.
 
 ## Roadmap
 
-1. Responsive dashboard and repository exploration UI
-2. GitHub Trending ingestion with parser fixtures and failure handling
-3. GitHub API synchronization and rate-limit-aware star snapshots
-4. PostgreSQL persistence and scheduled worker
-5. Watchlists, alerts, authentication, and deployment configuration
+1. Live Trending dashboard
+2. Historical star snapshots and momentum charts
+3. Persistent watchlists and user accounts (if needed)
+4. Notifications and production monitoring
 
 Never commit GitHub tokens or database credentials. Keep secrets in server-side environment variables.
