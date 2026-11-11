@@ -35,10 +35,11 @@ export async function fetchTrending(period: "daily" | "weekly" | "monthly") {
     const name = path.replace(/^\//, "").replace(/\/$/, "").replace(/\s+/g, "");
     if (!name.includes("/")) return;
 
-    const todayText = row.find("span").toArray()
+    const periodLabel = period === "daily" ? "today" : period === "weekly" ? "this week" : "this month";
+    const periodText = row.find("span").toArray()
       .map((span) => $(span).text().replace(/\s+/g, " ").trim())
-      .find((text) => /stars? today/i.test(text)) || "0 stars today";
-    const todayMatch = todayText.match(/([\d,.]+\s*[kKmM]?)\s+stars? today/i);
+      .find((text) => new RegExp(`stars? ${periodLabel.replace(" ", "\\s+")}`, "i").test(text)) || `0 stars ${periodLabel}`;
+    const periodMatch = periodText.match(new RegExp(`([\\d,.]+\\s*[kKmM]?)\\s+stars? ${periodLabel.replace(" ", "\\s+")}`, "i"));
 
     repositories.push({
       name,
@@ -46,7 +47,7 @@ export async function fetchTrending(period: "daily" | "weekly" | "monthly") {
       language: row.find('[itemprop="programmingLanguage"]').first().text().trim() || "Unknown",
       stars: parseCount(row.find('a[href$="/stargazers"]').first().text()),
       forks: parseCount(row.find('a[href$="/forks"]').first().text()),
-      periodGain: todayMatch ? parseCount(todayMatch[1]) : 0,
+      periodGain: periodMatch ? parseCount(periodMatch[1]) : 0,
       url: `https://github.com/${name}`,
     });
   });
